@@ -31,6 +31,7 @@ Start MongoDB locally and run:
 cd ./server && go run main.go
 ```
 
+Go to http://localhost:8080 in your browser.
 
 ## Running the client
 ```cd ./client && npm start```
@@ -39,7 +40,7 @@ cd ./server && go run main.go
 ### Movements API
 GET All Movements
 ```
-curl -v http://localhost:8080/api/movement
+curl -v http://localhost:8080/api/movements
 ```
 
 Example Response:
@@ -56,4 +57,9 @@ Example Response:
 
     },
 ]
+```
+
+PATCH Vote for Movement
+```
+curl -X PATCH -v http://localhost:8080/api/movements/<id>/vote
 ```
