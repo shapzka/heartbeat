@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"../models"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -67,6 +68,17 @@ func Movement(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	payload := getAllMovements()
 	json.NewEncoder(w).Encode(payload)
+}
+
+func Vote(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "PATCH")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	params := mux.Vars(r)
+
+	json.NewEncoder(w).Encode(params["id"])
 }
 
 func getAllMovements() []primitive.M {
