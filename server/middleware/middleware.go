@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 	"../models"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,6 +16,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+// WebSocket comms
+var clients = make(map[*websocket.Conn]bool)
+var broadcast = make(chan *models.WebSocketResponse)
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool { return true	},
+}
 
 // DB connection string
 // for localhost mongoDB
@@ -53,9 +61,9 @@ func init() {
 
 	collection = client.Database(dbName).Collection(collName)
 
-	fmt.Println("Collection instance created!")
-	test1 := models.Movement{primitive.NewObjectID(),"testMovement","testMovement summary", 10, 51.5074, 0.1278 }
-	insertResult, err := collection.InsertOne(context.TODO(), test1)
+	testDocument := models.Movement{primitive.NewObjectID(),"testMovement","testMovement summary", 10, 51.5074, 0.1278 }
+	insertResult, err := collection.InsertOne(context.TODO(), testDocument)
+
 	if err != nil {
 	     log.Fatal(err)
 	}
@@ -80,6 +88,34 @@ func Vote(w http.ResponseWriter, r *http.Request) {
 	vote(params["id"])
 
 	json.NewEncoder(w).Encode(params["id"])
+}
+
+func Broadcast() {
+	for {
+		response := <- broadcast
+		responseString := fmt.Sprintf("%s %d", response.Id, response.Count)
+
+		for c := range clients {
+			err := c.WriteMessage(websocket.TextMessage, []byte(responseString))
+			if err != nil {
+				log.Printf("Websocket error: %s", err)
+				c.Close()
+				delete(clients, c)
+			}
+		}
+	}
+}
+
+func RegisterConnection(w http.ResponseWriter, r *http.Request) {
+	ws, err := upgrader.Upgrade(w, r, nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	clients[ws] = true
+
+	return
 }
 
 func movements() []primitive.M {
@@ -108,17 +144,26 @@ func movements() []primitive.M {
 }
 
 func vote(movement string) {
-	fmt.Println("Voting for movement:" + movement)
-
 	id, _ := primitive.ObjectIDFromHex(movement)
 	filter := bson.M{"_id": id}
 	update := bson.M{"$inc": bson.M{"numberofparticipants": 1}}
 
-	result, err := collection.UpdateOne(context.Background(), filter, update)
+	var updatedDocument bson.M
+	err := collection.FindOneAndUpdate(context.Background(), filter, update).
+		Decode(&updatedDocument)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Modified count: ", result.ModifiedCount)
+	response := models.WebSocketResponse{
+		Count: updatedDocument["numberofparticipants"].(int32),
+		Id: movement,
+	}
+
+	go writer(&response)
+}
+
+func writer(coord *models.WebSocketResponse) {
+	broadcast <- coord
 }

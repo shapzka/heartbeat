@@ -12,3 +12,10 @@ type Movement struct {
   Longitude            float64             `json:"longitude,omitempty"`
 
 }
+
+type WebSocketResponse struct {
+
+  Count int32 `json:"count"`
+  Id  string  `json:"id"`
+
+}
