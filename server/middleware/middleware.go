@@ -63,10 +63,10 @@ func init() {
 	fmt.Println("Inserted a singe document: ", insertResult.InsertedID)
 }
 
-func Movement(w http.ResponseWriter, r *http.Request) {
+func Movements(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	payload := getAllMovements()
+	payload := movements()
 	json.NewEncoder(w).Encode(payload)
 }
 
@@ -77,11 +77,12 @@ func Vote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	params := mux.Vars(r)
+	vote(params["id"])
 
 	json.NewEncoder(w).Encode(params["id"])
 }
 
-func getAllMovements() []primitive.M {
+func movements() []primitive.M {
 	cur, err := collection.Find(context.Background(), bson.D{{}})
 	if err != nil {
 		log.Fatal(err)
@@ -104,4 +105,20 @@ func getAllMovements() []primitive.M {
 
 	cur.Close(context.Background())
 	return results
+}
+
+func vote(movement string) {
+	fmt.Println("Voting for movement:" + movement)
+
+	id, _ := primitive.ObjectIDFromHex(movement)
+	filter := bson.M{"_id": id}
+	update := bson.M{"$inc": bson.M{"numberofparticipants": 1}}
+
+	result, err := collection.UpdateOne(context.Background(), filter, update)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Modified count: ", result.ModifiedCount)
 }

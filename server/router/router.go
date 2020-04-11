@@ -42,8 +42,8 @@ func Router() *mux.Router {
 
 	router.HandleFunc("/", home).Methods("GET")
 	router.HandleFunc("/ws", echo)
-	router.HandleFunc("/api/movement", middleware.Movement).Methods("GET", "OPTIONS")
-	router.HandleFunc("/api/movement/{id}/vote", middleware.Vote).Methods("PATCH", "OPTIONS")
+	router.HandleFunc("/api/movements", middleware.Movements).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/movements/{id}/vote", middleware.Vote).Methods("PATCH", "OPTIONS")
 
 	return router
 }
