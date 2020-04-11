@@ -26,6 +26,7 @@ cd ./client && npm install
 ```
 
 ## Running the server
+Start MongoDB locally and run:
 ```
 cd ./server && go run main.go
 ```
