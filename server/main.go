@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-  "log"
-  "./router"
+	"log"
+	"./router"
 )
 
 func main() {

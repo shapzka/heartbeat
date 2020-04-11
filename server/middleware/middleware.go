@@ -8,9 +8,6 @@ import (
 	"net/http"
 
 	"../models"
-	/*
-	"github.com/gorilla/mux"
-	*/
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -86,7 +83,7 @@ func getAllMovements() []primitive.M {
 		if e != nil {
 			log.Fatal(e)
 		}
-		// fmt.Println("cur..>", cur, "result", reflect.TypeOf(result), reflect.TypeOf(result["_id"]))
+
 		results = append(results, result)
 	}
 

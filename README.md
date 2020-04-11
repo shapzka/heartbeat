@@ -4,22 +4,17 @@ An application to keep movements alive during self-isolation/lockdown.
 ### Golang
 1. [Install Go (>`1.11`)](https://golang.org/doc/install)
 
-2. Install [Gin Web Framework Package](https://github.com/gin-gonic/gin)
-```
-go get -u github.com/gin-gonic/gin
-```
-
-3. Install [MongoDB GoDriver](https://github.com/mongodb/mongo-go-driver)
+2. Install [MongoDB GoDriver](https://github.com/mongodb/mongo-go-driver)
 ```
 go get go.mongodb.org/mongo-driver
 ```
 
-4. Install [Gorilla Mux](https://github.com/gorilla/mux)
+3. Install [Gorilla Mux](https://github.com/gorilla/mux)
 ```
 go get -u github.com/gorilla/mux
 ```
 
-5. Install [Gorilla WebSocket](https://github.com/gorilla/websocket)
+4. Install [Gorilla WebSocket](https://github.com/gorilla/websocket)
 ```
 go get github.com/gorilla/websocket
 ```
