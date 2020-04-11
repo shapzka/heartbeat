@@ -1,7 +1,7 @@
 package router
 
 import (
-	// "../middleware"
+	"../middleware"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
 	"net/http"
@@ -42,7 +42,7 @@ func Router() *mux.Router {
 
 	router.HandleFunc("/", home).Methods("GET")
 	router.HandleFunc("/ws", echo)
-	// router.HandleFunc("/api/movement", middleware.Movement).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/movement", middleware.Movement).Methods("GET", "OPTIONS")
 
 	return router
 }
