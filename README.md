@@ -39,7 +39,7 @@ Go to http://localhost:8080 in your browser.
 
 ## Testing APIs
 ### Movements API
-GET All Movements
+`GET` All Movements
 ```
 curl -v http://localhost:8080/api/movements
 ```
@@ -60,7 +60,13 @@ Example Response:
 ]
 ```
 
-PATCH Vote for Movement
+`POST` Create Movement
+```
+curl -X POST -v http://127.0.0.1:8080/api/movements \
+-d '{"title": "TestMovement","summary": "Power to the people.","latitude": 51.5074,"longitude": 0.1278}'
+```
+
+`PATCH` Vote for Movement
 ```
 curl -X PATCH -v http://localhost:8080/api/movements/<id>/vote
 ```

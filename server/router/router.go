@@ -20,6 +20,7 @@ func Router() *mux.Router {
 
 	router.HandleFunc("/", home).Methods("GET")
 	router.HandleFunc("/api/movements", middleware.Movements).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/movements", middleware.CreateMovement).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/movements/{id}/vote", middleware.Vote).Methods("PATCH", "OPTIONS")
 	router.HandleFunc("/api/websocket", middleware.RegisterConnection)
 

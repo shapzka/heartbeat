@@ -60,15 +60,6 @@ func init() {
 	fmt.Println("Connected to MongoDB!")
 
 	collection = client.Database(dbName).Collection(collName)
-
-	testDocument := models.Movement{primitive.NewObjectID(),"testMovement","testMovement summary", 10, 51.5074, 0.1278 }
-	insertResult, err := collection.InsertOne(context.TODO(), testDocument)
-
-	if err != nil {
-	     log.Fatal(err)
-	}
-
-	fmt.Println("Inserted a singe document: ", insertResult.InsertedID)
 }
 
 func Movements(w http.ResponseWriter, r *http.Request) {
@@ -76,6 +67,21 @@ func Movements(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	payload := movements()
 	json.NewEncoder(w).Encode(payload)
+}
+
+func CreateMovement(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var movement models.Movement
+	_ = json.NewDecoder(r.Body).Decode(&movement)
+	movement.Id = primitive.NewObjectID()
+	movement.NumberOfParticipants = 0
+
+	insertMovement(movement)
+	json.NewEncoder(w).Encode(movement)
 }
 
 func Vote(w http.ResponseWriter, r *http.Request) {
@@ -143,13 +149,28 @@ func movements() []primitive.M {
 	return results
 }
 
+func insertMovement(movement models.Movement) {
+	response, err := collection.InsertOne(context.Background(), movement)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Inserted a Single Record ", response.InsertedID)
+}
+
 func vote(movement string) {
 	id, _ := primitive.ObjectIDFromHex(movement)
 	filter := bson.M{"_id": id}
-	update := bson.M{"$inc": bson.M{"numberofparticipants": 1}}
+	update := bson.M{"$inc": bson.M{"numberofparticipants": 1},}
 
 	var updatedDocument bson.M
-	err := collection.FindOneAndUpdate(context.Background(), filter, update).
+	after := options.After
+	opt := options.FindOneAndUpdateOptions{
+		ReturnDocument: &after,
+	}
+
+	err := collection.FindOneAndUpdate(context.Background(), filter, update, &opt).
 		Decode(&updatedDocument)
 
 	if err != nil {
