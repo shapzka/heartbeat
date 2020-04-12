@@ -7,7 +7,8 @@ import (
 	"log"
 	"net/http"
 
-	/*"../models"
+	"../models"
+	/*
 	"github.com/gorilla/mux"
 	*/
 
@@ -56,6 +57,13 @@ func init() {
 	collection = client.Database(dbName).Collection(collName)
 
 	fmt.Println("Collection instance created!")
+	test1 := models.Movement{primitive.NewObjectID(),"testMovement","testMovement summary", 10, 51.5074, 0.1278 }
+	insertResult, err := collection.InsertOne(context.TODO(), test1)
+	if err != nil {
+	     log.Fatal(err)
+	}
+
+	fmt.Println("Inserted a singe document: ", insertResult.InsertedID)
 }
 
 func Movement(w http.ResponseWriter, r *http.Request) {

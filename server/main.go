@@ -35,22 +35,22 @@ func echo(w http.ResponseWriter, r *http.Request) {
 */
 func main() {
 /* Uncomment for Websocket
-	r := gin.Default()
-	r.LoadHTMLFiles("index.html")
+  	r := gin.Default()
+  	r.LoadHTMLFiles("index.html")
 
-	r.GET("/", func(c *gin.Context) {
-    c.HTML(200, "index.html", nil)
-	})
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.GET("/ws", func(c *gin.Context) {
-		echo(c.Writer, c.Request)
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080
-*/
+  	r.GET("/", func(c *gin.Context) {
+      c.HTML(200, "index.html", nil)
+  	})
+  	r.GET("/ping", func(c *gin.Context) {
+  		c.JSON(200, gin.H{
+  			"message": "pong",
+  		})
+  	})
+  	r.GET("/ws", func(c *gin.Context) {
+  		echo(c.Writer, c.Request)
+  	})
+  	r.Run() // listen and serve on 0.0.0.0:8080
+  */
     r := router.Router()
     	// fs := http.FileServer(http.Dir("build"))
     	// http.Handle("/", fs)
