@@ -11,15 +11,15 @@ import (
 )
 
 func main() {
-		var dbAddr string
-		flag.StringVar(&dbAddr, "db", "mongodb://localhost:27017", "MongoDB instance address")
-		flag.Parse()
+	var dbAddr string
+	flag.StringVar(&dbAddr, "db", "mongodb://localhost:27017", "MongoDB instance address")
+	flag.Parse()
 
-		middleware.Init(dbAddr)
+	middleware.Init(dbAddr)
 
-    r := router.Router()
+	r := router.Router()
 
-    fmt.Println("Starting Go server on the port 8080...")
-    log.Fatal(http.ListenAndServe(":8080", r))
+	fmt.Println("Starting Go server on the port 8080...")
+	log.Fatal(http.ListenAndServe(":8080", r))
 
 }
