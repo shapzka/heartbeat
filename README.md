@@ -31,6 +31,10 @@ Start MongoDB locally and run:
 ```
 cd ./server && go run main.go
 ```
+Or pass a MongoDB URI to the server
+```
+cd ./server && go run main.go --db=<DB_URI>
+```
 
 Go to http://localhost:8080 in your browser.
 

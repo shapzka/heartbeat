@@ -24,27 +24,18 @@ var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true	},
 }
 
-// DB connection string
-// for localhost mongoDB
-const connectionString = "mongodb://localhost:27017"
-
-// Database Name
+// DB setup
 const dbName = "heartbeat"
-
-// Collection name
 const collName = "movement"
-
-// collection object/instance
 var collection *mongo.Collection
 
-// create connection with mongo db
-func init() {
-
+// Initialize DB connection
+func Init(address string) {
 	// Set client options
-	clientOptions := options.Client().ApplyURI(connectionString)
+	opts := options.Client().ApplyURI(address)
 
 	// connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	client, err := mongo.Connect(context.TODO(), opts)
 
 	if err != nil {
 		log.Fatal(err)
