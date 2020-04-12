@@ -7,9 +7,24 @@ An application to keep movements alive during self-isolation/lockdown.
 ```go get -u github.com/gin-gonic/gin```
 3. Install [MongoDB GoDriver](https://github.com/mongodb/mongo-go-driver)
 ```go get go.mongodb.org/mongo-driver```
-3. Install [gorilla/mux package](https://github.com/gorilla/mux)
+4. Install [gorilla/mux package](https://github.com/gorilla/mux)
 ```go get -u github.com/gorilla/mux```
 
+
+### React
+1. Install Node.js - v12.16.2 [https://nodejs.org/en/]
+2. Install Leaflet for the maps. Make sure you are in the client folder
+   ```npm install leaflet```
+3. Install React Leaflet library to interact with Leaflet.  Make sure you are in the client folder
+   ```npm install react-leaflet```
+4. Initialise in client folder so npm knows where to find the package.json
+   ```npm init```
+5. Run the following in a command prompt to start the npm client  
+   ```npm install```
+   
+   ```npm start```
+   
+   
 ## Running the server
 ```cd ./server && go run main.go```
 
