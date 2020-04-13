@@ -1,5 +1,5 @@
 # heartbeat
-This is a [hackathon](https://womendrivendev.org/ukvscovid19) PoC of an app that aims to keep movements alive and visible in times of lockdown. Users will be able to see demonstrations for causes in their communities or around that world. Supporters will be able to register their _heartbeat_ and help movements grow.
+This is a [hackathon](https://womendrivendev.org/ukvscovid19) PoC of an app that aims to keep movements alive and visible in times of lockdown. Users will be able to see a map of demonstrations for causes in their communities or around that world. Supporters will be able to register their _heartbeat_ and help movements grow.
 
 ## Development Setup
 ### Golang
